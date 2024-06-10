@@ -5,17 +5,6 @@ import fetch from 'node-fetch';
 const app = express();
 const port = 3000;
 
-
-// Typy dla process.env
-declare global {
-  namespace NodeJS {
-    interface ProcessEnv {
-      API_URL: string;
-      API_KEY: string;
-    }
-  }
-}
-
 dotenv.config({ path: '.env.development' });
 
 
