@@ -1,10 +1,9 @@
-import dotenv from 'dotenv';
-import express from 'express';
-import fetch from 'node-fetch';
+import dotenv from "dotenv";
+import express from "express";
+import fetch from "node-fetch";
 
 const app = express();
 const port = 3000;
-
 
 // Typy dla process.env
 declare global {
@@ -16,23 +15,22 @@ declare global {
   }
 }
 
-dotenv.config({ path: '.env.development' });
-
+dotenv.config({ path: ".env.development" });
 
 // Konfiguracja API
-const API_URL = process.env.API_URL || '';
-const API_KEY = process.env.API_KEY || '';
+const API_URL = process.env.API_URL || "";
+const API_KEY = process.env.API_KEY || "";
 
 let lastResponse: any = null;
 let nextRequestTime: Date | null = null;
 let lastRequestTime: Date | null = null;
 
-// Funkcja do wykonywania żądania API
+// Funkcja do wykonywania żądania APIi
 async function getListedItems() {
   const params = new URLSearchParams({
-    per_page: '10',
-    page: '1',
-    search: '★ Gut Knife | Freehand (Factory New)',
+    per_page: "10",
+    page: "1",
+    search: "★ Gut Knife | Freehand (Factory New)",
     // order: 'market_value',
     // sort: 'asc',
     // auction: 'no',
@@ -45,20 +43,20 @@ async function getListedItems() {
   });
 
   const response = await fetch(`${API_URL}?${params.toString()}`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'Authorization': `Bearer ${API_KEY}`
-    }
+      Authorization: `Bearer ${API_KEY}`,
+    },
   });
 
   if (!response.ok) {
-    console.error('Error:', response.statusText);
+    console.error("Error:", response.statusText);
     return;
   }
 
   lastResponse = await response.json();
   lastRequestTime = new Date();
-  console.log('Listed Items:', lastResponse);
+  console.log("Listed Items:", lastResponse);
 }
 
 // Uruchomienie funkcji co 5 minut
@@ -72,7 +70,7 @@ getListedItems();
 nextRequestTime = new Date(Date.now() + 5 * 60 * 1000);
 
 // Konfiguracja serwera Express
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
   res.send(`
     <html>
       <head>
@@ -84,7 +82,11 @@ app.get('/', (req, res) => {
           <h2>Last API Response:</h2>
           <pre id="response">${JSON.stringify(lastResponse, null, 2)}</pre>
           <h2>Last Request Time:</h2>
-          <p id="lastRequestTime">${lastRequestTime ? lastRequestTime.toLocaleString() : 'No request made yet'}</p>
+          <p id="lastRequestTime">${
+            lastRequestTime
+              ? lastRequestTime.toLocaleString()
+              : "No request made yet"
+          }</p>
           <h2>Next Request In:</h2>
           <p id="timer"></p>
         </div>
@@ -98,7 +100,9 @@ app.get('/', (req, res) => {
             setTimeout(updateTimer, 1000);
           }
 
-          const nextRequestTime = new Date("${nextRequestTime?.toISOString() || ''}");
+          const nextRequestTime = new Date("${
+            nextRequestTime?.toISOString() || ""
+          }");
           updateTimer();
         </script>
       </body>
