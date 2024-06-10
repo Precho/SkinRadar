@@ -7,7 +7,6 @@ const port = 3000;
 
 dotenv.config({ path: '.env.development' });
 
-
 // Konfiguracja API
 const API_URL = process.env.API_URL || '';
 const API_KEY = process.env.API_KEY || '';
@@ -20,6 +19,7 @@ let lastRequestTime: Date | null = null;
 async function getListedItems() {
   const params = new URLSearchParams({
     per_page: '10',
+    
     page: '1',
     search: '★ Gut Knife | Freehand (Factory New)',
     // order: 'market_value',
