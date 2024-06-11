@@ -4,7 +4,9 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "node --loader ts-node/esm src/app.ts"
+    "start:server": "node --loader ts-node/esm server/app.ts",
+    "start:client": "npm start --prefix client",
+    "start": "killall -9 node || true && concurrently \"npm run start:server\" \"npm run start:client\""
   },
   "author": "",
   "license": "ISC",
@@ -13,6 +15,7 @@
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.21",
     "@types/node": "^20.14.2",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "node-fetch": "^3.3.2",
@@ -21,8 +24,10 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.4.0",
+    "@types/cors": "^2.8.17",
     "eslint": "^9.4.0",
     "globals": "^15.4.0",
-    "typescript-eslint": "^7.13.0"
+    "typescript-eslint": "^7.13.0",
+    "concurrently": "^8.2.0"
   }
 }
